@@ -1,15 +1,16 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "server.js",
-      "use": "@vercel/node"
-    }
+  "rewrites": [
+    // Jika user mengakses /, arahkan ke /app (tempat frontend seharusnya)
+    { "source": "/", "destination": "/app" },
+    
+    // Semua path statis (index.html, dll.) harus dicoba dimuat langsung
+    { "source": "/(.*)", "destination": "/$1" }
   ],
   "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "server.js"
-    }
+    // Ini memastikan index.html dimuat ketika user mengakses /app
+    { "src": "/app", "dest": "/index.html" },
+    
+    // Ini memastikan semua request API (login, register) diarahkan ke server.js
+    { "src": "/(.*)", "dest": "server.js" }
   ]
 }
